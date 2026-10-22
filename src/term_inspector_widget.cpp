@@ -73,9 +73,9 @@ void TermInspectorWidget::clear_statistics() {
 
 void TermInspectorWidget::reset() {
     term_edit_->clear();
-    selected_chunk_id_.clear();
-    inspect_button_->setEnabled(true);
     clear_statistics();
+    selected_chunk_id_.clear();
+    inspect_button_->setEnabled(false);
 }
 
 void TermInspectorWidget::request_inspection() {

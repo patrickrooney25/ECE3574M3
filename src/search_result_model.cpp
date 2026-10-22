@@ -30,16 +30,11 @@ QVariant SearchResultModel::data(const QModelIndex& index, int role) const {
     const auto& item = results_[static_cast<std::size_t>(index.row())];
     switch(index.column()){
         case 0: //rank
-            return index.row()+1;
+            return static_cast<qlonglong>(index.row() + 1);
         case 1://doc
             return QString::fromStdString(item.document_id);
         case 2:{//chunk
-            const QString chunk_str = QString::fromStdString(item.chunk_id);
-            const int hash_pos = chunk_str.indexOf('#');
-            if(hash_pos != -1) {
-                return chunk_str.mid(hash_pos+1);
-            }
-            return chunk_str;
+            return  static_cast<qlonglong>(item.chunk_index);
         }
         case 3://score
             return QString::number(item.score, 'f', 6);

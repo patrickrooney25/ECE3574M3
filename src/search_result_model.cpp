@@ -33,10 +33,8 @@ QVariant SearchResultModel::data(const QModelIndex& index, int role) const {
             return static_cast<qlonglong>(index.row() + 1);
         case 1://doc
             return QString::fromStdString(item.document_id);
-        case 2:{ //chunk
-            const QString chunk_str = QString::fromStdString(item.chunk_id);
-            return chunk_str.section('#', -1).toLongLong();
-        }
+        case 2: //chunk
+            return static_cast<qlonglong>(item.chunk_sequence);
         case 3://score
             return QString::number(item.score, 'f', 6);
         case 4://text

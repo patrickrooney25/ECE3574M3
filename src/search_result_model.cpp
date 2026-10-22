@@ -1,54 +1,94 @@
 #include "aiws/gui/search_result_model.hpp"
 
+#include <utility>
+
 namespace aiws::gui {
 
 SearchResultModel::SearchResultModel(QObject* parent)
     : QAbstractTableModel(parent) {
-    // TODO
 }
 
 int SearchResultModel::rowCount(const QModelIndex& parent) const {
-    // TODO
-    (void)parent;  // To suppress unused-parameter warning.
-    return 0;
+    if (parent.isValid()) {
+        return 0;
+    }
+    return static_cast<int>(results_.size());
 }
 
 int SearchResultModel::columnCount(const QModelIndex& parent) const {
-    // TODO
-    (void)parent;  // To suppress unused-parameter warning.
-    return 0;
+    if(parent.isValid()) {
+        return 0;
+    }
+    return 5;  //rank, doc, chunk, score, text
 }
 
 QVariant SearchResultModel::data(const QModelIndex& index, int role) const {
-    // TODO
-    (void)index;  // To suppress unused-parameter warning.
-    (void)role;  // To suppress unused-parameter warning.
-    return {};
+    if(!index.isValid()|| role!=Qt::DisplayRole) {
+        return {};
+    }
+
+    const auto& item = results_[static_cast<std::size_t>(index.row())];
+    switch(index.column()){
+        case 0: //rank
+            return index.row()+1;
+        case 1://doc
+            return QString::fromStdString(item.document_id);
+        case 2:{//chunk
+            const QString chunk_str = QString::fromStdString(item.chunk_id);
+            const int hash_pos = chunk_str.indexOf('#');
+            if(hash_pos != -1) {
+                return chunk_str.mid(hash_pos+1);
+            }
+            return chunk_str;
+        }
+        case 3://score
+            return QString::number(item.score, 'f', 6);
+        case 4://text
+            return QString::fromStdString(item.text);
+        default:
+            return {};
+    }
 }
 
 QVariant SearchResultModel::headerData(int section,
                                        Qt::Orientation orientation,
                                        int role) const {
-    // TODO
-    (void)section;  // To suppress unused-parameter warning.
-    (void)orientation;  // To suppress unused-parameter warning.
-    (void)role;  // To suppress unused-parameter warning.
-    return {};
+    if(role!=Qt::DisplayRole || orientation!=Qt::Horizontal) {
+        return {};
+    }
+    switch(section) {
+        case 0:
+            return "Rank";
+        case 1:
+            return "Document";
+        case 2:
+            return "Chunk";
+        case 3:
+            return "Score";
+        case 4:
+            return "Text";
+        default:
+            return {};
+    }
 }
 
 void SearchResultModel::set_results(std::vector<SearchResult> results) {
-    // TODO
-    (void)results;  // To suppress unused-parameter warning.
+    beginResetModel();
+    results_ =std::move(results);
+    endResetModel();
 }
 
 void SearchResultModel::clear() {
-    // TODO
+    beginResetModel();
+    results_.clear();
+    endResetModel();
 }
 
 const SearchResult* SearchResultModel::result_at(int row) const noexcept {
-    // TODO
-    (void)row;  // To suppress unused-parameter warning.
-    return nullptr;
+    if(row <0 || static_cast<std::size_t>(row) >= results_.size()){
+        return nullptr;
+    }
+    return &results_[static_cast<std::size_t>(row)];
 }
 
 }  // namespace aiws::gui

@@ -1,0 +1,5 @@
+set(__QT_DEPLOY_TARGET_aiws_m2_FILE C:/Users/patri/Downloads/ECE_3574/ECE3574M3/ECE3574M3/build/libaiws_m2.a)
+set(__QT_DEPLOY_TARGET_aiws_m2_TYPE STATIC_LIBRARY)
+set(__QT_DEPLOY_TARGET_ai_workspace_m3_FILE C:/Users/patri/Downloads/ECE_3574/ECE3574M3/ECE3574M3/build/ai_workspace_m3.exe)
+set(__QT_DEPLOY_TARGET_ai_workspace_m3_TYPE EXECUTABLE)
+set(__QT_DEPLOY_TARGET_ai_workspace_m3_RUNTIME_DLLS C:/Qt/6.11.2/mingw_64/bin/Qt6Widgets.dll;C:/Qt/6.11.2/mingw_64/bin/Qt6Gui.dll;C:/Qt/6.11.2/mingw_64/bin/Qt6Core.dll)

@@ -35,11 +35,7 @@ QVariant SearchResultModel::data(const QModelIndex& index, int role) const {
             return QString::fromStdString(item.document_id);
         case 2:{ //chunk
             const QString chunk_str = QString::fromStdString(item.chunk_id);
-            const int hash_pos = chunk_str.indexOf('#');
-            if (hash_pos != -1){
-                return chunk_str.mid(hash_pos + 1);
-            }
-            return chunk_str;
+            return chunk_str.section('#', -1).toLongLong();
         }
         case 3://score
             return QString::number(item.score, 'f', 6);
